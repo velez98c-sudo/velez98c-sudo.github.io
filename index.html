@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#4a3024">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Órdenes de Cargue">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>ORDENES DE CARGUE</title>
+<style>
+:root{--navy:#4a3024;--blue:#8a5a3b;--light:#f7f2ec;--line:#dfd2c5;--green:#567a55;--red:#a84b3d;--gold:#b88746;--text:#342a24;--cream:#fffaf5}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--light);color:var(--text);text-transform:uppercase}
+header{padding-top:max(22px,env(safe-area-inset-top));background:linear-gradient(135deg,#4a3024,#8a5a3b);color:#fff;padding:22px 18px;box-shadow:0 3px 12px #0002}
+.header-inner{padding-right:max(0px,env(safe-area-inset-right));padding-left:max(0px,env(safe-area-inset-left));max-width:1250px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:20px}
+.brand{display:flex;align-items:center;gap:14px}.logo{width:48px;height:48px;border:2px solid #fff;border-radius:12px;display:grid;place-items:center;font-weight:900;font-size:20px}.brand h1{margin:0;font-size:25px}.brand small{opacity:.8;letter-spacing:1px}
+nav{background:var(--cream);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.nav-inner{max-width:1250px;margin:auto;display:flex;overflow:auto}.tab{border:0;background:var(--cream);padding:17px 20px;cursor:pointer;font-weight:800;font-size:15px;color:#69584d;white-space:nowrap}.tab.active{color:var(--blue);border-bottom:4px solid var(--gold)}
+main{max-width:1250px;margin:22px auto;padding:0 16px}.section{display:none}.section.active{display:block}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}.card{background:var(--cream);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 3px 10px #6b4b3512}.card .num{font-size:30px;font-weight:900;color:var(--navy)}.card span{font-size:13px;color:#725f52;font-weight:800}
+.panel{background:var(--cream);border:1px solid var(--line);border-radius:15px;padding:21px;box-shadow:0 4px 14px #6b4b3510;margin-bottom:20px}.panel h2{margin:0 0 17px;color:var(--navy);font-size:20px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.field{display:flex;flex-direction:column;gap:7px}.field label{font-size:13px;font-weight:900;color:#665448}.field input,.field select,.field textarea{width:100%;border:1px solid #cfbfb0;border-radius:9px;padding:12px 13px;font-size:15px;outline:none;text-transform:uppercase;background:#fffdfb}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #8a5a3b18}.field textarea{min-height:82px;resize:vertical}.wide{grid-column:span 2}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:17px}.btn{border:0;border-radius:9px;padding:12px 18px;font-weight:900;font-size:14px;cursor:pointer}.primary{background:var(--blue);color:#fff}.success{background:var(--green);color:#fff}.danger{background:var(--red);color:#fff}.secondary{background:#e9dfd6;color:#4b3b31}
+.search{margin-bottom:14px;max-width:420px}.search input{width:100%;padding:12px;border:1px solid #cfbfb0;border-radius:9px;text-transform:uppercase;font-size:14px}
+.record-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.record-card{background:#fffdfb;border:1px solid var(--line);border-radius:13px;padding:16px;box-shadow:0 2px 8px #6b4b350b}.record-card .record-title{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid var(--line);padding-bottom:11px;margin-bottom:11px}.record-card .record-title strong{font-size:17px;color:var(--navy)}.record-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px 16px}.record-item{display:flex;flex-direction:column;gap:3px}.record-item.full{grid-column:1/-1}.record-item span{font-size:10px;font-weight:900;color:#806f63}.record-item b{font-size:13px;word-break:break-word}.badge{display:inline-block;padding:6px 9px;border-radius:20px;font-size:11px;font-weight:900}.pending{background:#f7e8c5;color:#785719}.done{background:#dce9dc;color:#466a45}
+.empty{text-align:center;padding:30px;color:#7a6a60;font-weight:700}
+.notice{padding:13px 15px;border-radius:9px;background:#f2e8df;border-left:4px solid var(--gold);font-size:13px;margin-bottom:15px}
+.footer{text-align:center;color:#7b8793;font-size:11px;padding:25px}
+@media(max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:repeat(2,1fr)}.record-list{grid-template-columns:1fr}}
+@media(max-width:600px){header{padding:16px}.brand h1{font-size:19px}.brand small{font-size:9px}.cards{grid-template-columns:repeat(2,1fr);gap:9px}.card{padding:13px}.card .num{font-size:23px}.grid{grid-template-columns:1fr}.wide{grid-column:span 1}.panel{padding:15px}main{margin:14px auto;padding:0 10px}.tab{padding:13px 12px;font-size:11px}}
+</style>
+</head>
+<body>
+<header><div class="header-inner"><div class="brand"><div class="logo">OC</div><div><h1>ORDENES DE CARGUE</h1><small>CONTROL Y GESTIÓN DE DESPACHOS</small></div></div><button id="installApp" class="btn secondary" style="display:none">INSTALAR APP</button></div></header>
+<nav><div class="nav-inner">
+<button class="tab active" data-tab="inicio">INICIO</button><button class="tab" data-tab="ordenes">REGISTRAR ORDEN</button><button class="tab" data-tab="placas">REGISTRAR PLACA</button><button class="tab" data-tab="despacho">DESPACHAR PEDIDO</button><button class="tab" data-tab="historial">DESPACHADOS</button><button class="tab" data-tab="config">ADMINISTRACIÓN</button>
+</div></nav>
+
+<main>
+<section id="inicio" class="section active">
+<div class="cards"><div class="card"><span>TOTAL ORDENES</span><div class="num" id="cTotal">0</div></div><div class="card"><span>PENDIENTES</span><div class="num" id="cPending">0</div></div><div class="card"><span>DESPACHADOS</span><div class="num" id="cDone">0</div></div><div class="card"><span>PLACAS REGISTRADAS</span><div class="num" id="cPlates">0</div></div></div>
+<div class="panel"><h2>RESUMEN OPERATIVO</h2><div class="notice">LOS REGISTROS SE GUARDAN AUTOMÁTICAMENTE EN ESTE DISPOSITIVO. LOS PEDIDOS Y DESPACHOS GUARDADOS NO PUEDEN SER MODIFICADOS DESDE LA INTERFAZ.</div><div id="homeTable"></div></div>
+</section>
+
+<section id="ordenes" class="section">
+<div class="panel"><h2>REGISTRAR NUEVA ORDEN DE CARGUE</h2>
+<form id="orderForm"><div class="grid">
+<div class="field"><label>NÚMERO DE ORDEN *</label><input id="orden" required></div>
+<div class="field"><label>NÚMERO DE PEDIDO *</label><input id="pedido" required></div>
+<div class="field"><label>NÚMERO DE REFERENCIA *</label><input id="referencia" required></div>
+<div class="field"><label>CLIENTE *</label><input id="cliente" required></div>
+<div class="field"><label>PLACA *</label><input id="placaOrden" required maxlength="10" placeholder="ESCRIBA LA PLACA"></div>
+<div class="field"><label>HORA *</label><input id="hora" type="time" required></div>
+<div class="field"><label>CANTIDAD A CARGAR *</label><input id="cantidad" type="number" min="1" required></div>
+<div class="field"><label>CANTIDAD MÍNIMA *</label><input id="minima" type="number" min="0" required></div>
+<div class="field"><label>CANTIDAD MÁXIMA *</label><input id="maxima" type="number" min="0" required></div>
+<div class="field"><label>RESPONSABLE *</label><input id="responsable" required></div>
+<div class="field wide"><label>OBSERVACIONES</label><textarea id="observaciones"></textarea></div>
+</div><div class="actions"><button class="btn primary" type="submit">GUARDAR ORDEN</button><button class="btn secondary" type="reset">LIMPIAR FORMULARIO</button></div></form></div>
+<div class="panel"><h2>ORDENES REGISTRADAS</h2><div class="search"><input id="searchOrders" placeholder="BUSCAR PEDIDO, CLIENTE, ORDEN O PLACA"></div><div id="ordersTable"></div></div>
+</section>
+
+<section id="placas" class="section">
+<div class="panel"><h2>REGISTRAR PLACA</h2><form id="plateForm"><div class="grid">
+<div class="field"><label>NÚMERO DE PLACA *</label><input id="plate" required></div>
+<div class="field"><label>CONDUCTOR *</label><input id="driver" required></div>
+<div class="field"><label>TIPO DE CAMIÓN *</label><input id="truck" required></div>
+<div class="field"><label>NÚMERO DE REGISTRO *</label><input id="reg" required></div>
+</div><div class="actions"><button class="btn primary" type="submit">GUARDAR PLACA</button></div></form></div>
+<div class="panel"><h2>PLACAS REGISTRADAS</h2><div id="platesTable"></div></div>
+</section>
+
+<section id="despacho" class="section">
+<div class="panel"><h2>DESPACHAR PEDIDO</h2><div class="notice">SELECCIONE UN PEDIDO PENDIENTE Y LA PLACA QUE REALIZA EL DESPACHO. AL CONFIRMAR, EL PEDIDO PASARÁ AL HISTORIAL Y YA NO APARECERÁ COMO PENDIENTE.</div>
+<form id="dispatchForm"><div class="grid">
+<div class="field wide"><label>PEDIDO A DESPACHAR *</label><select id="dispatchOrder" required><option value="">SELECCIONAR PEDIDO</option></select></div>
+<div class="field"><label>PLACA *</label><select id="dispatchPlate" required><option value="">SELECCIONAR PLACA</option></select></div>
+<div class="field"><label>FECHA Y HORA</label><input id="dispatchDate" type="datetime-local" required></div>
+<div class="field wide"><label>OBSERVACIONES DE DESPACHO</label><textarea id="dispatchObs"></textarea></div>
+</div><div class="actions"><button class="btn success" type="submit">CONFIRMAR DESPACHO</button></div></form></div>
+<div class="panel"><h2>PEDIDOS PENDIENTES</h2><div id="pendingTable"></div></div>
+</section>
+
+<section id="historial" class="section"><div class="panel"><h2>HISTORIAL DE PEDIDOS DESPACHADOS</h2><div class="search"><input id="searchDone" placeholder="BUSCAR PEDIDO, CLIENTE O PLACA"></div><div id="doneTable"></div></div></section>
+
+<section id="config" class="section"><div class="panel"><h2>ADMINISTRACIÓN</h2><div class="notice">ESTA ACCIÓN ELIMINA LOS REGISTROS GUARDADOS EN ESTE DISPOSITIVO. UTILÍCELA SOLO CUANDO SEA NECESARIO.</div><div class="actions"><button class="btn danger" id="clearAll">LIMPIAR TODOS LOS REGISTROS</button></div></div></section>
+</main>
+<div class="footer">ORDENES DE CARGUE • SISTEMA LOCAL DE CONTROL • AUTOGUARDADO ACTIVADO</div>
+
+<script>
+const KEY='ordenes_cargue_v1';
+let db=JSON.parse(localStorage.getItem(KEY)||'{"orders":[],"plates":[],"dispatches":[]}');
+const $=id=>document.getElementById(id);
+const save=()=>{localStorage.setItem(KEY,JSON.stringify(db));renderAll()};
+const upperInputs=()=>document.querySelectorAll('input:not([type=time]):not([type=datetime-local]),textarea').forEach(el=>el.addEventListener('input',()=>{el.value=el.value.toUpperCase()}));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+const nowLocal=()=>{const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,16)};
+function fillSelects(){
+  const orderSelect=$('dispatchOrder'), plateSelect=$('dispatchPlate');
+  if(orderSelect){const current=orderSelect.value; const pending=db.orders.filter(o=>!db.dispatches.some(d=>d.orderId===o.id)); orderSelect.innerHTML='<option value="">SELECCIONAR PEDIDO</option>'+pending.map(o=>`<option value="${esc(o.id)}">PEDIDO ${esc(o.pedido)} • PLACA ${esc(o.placa)}</option>`).join(''); if(pending.some(o=>o.id===current)) orderSelect.value=current;}
+  if(plateSelect){const current=plateSelect.value; plateSelect.innerHTML='<option value="">SELECCIONAR PLACA</option>'+db.plates.map(p=>`<option value="${esc(p.plate)}">${esc(p.plate)} • ${esc(p.driver)}</option>`).join(''); if(db.plates.some(p=>p.plate===current)) plateSelect.value=current;}
+}
+function renderAll(){renderCounters();renderPlates();renderOrders();renderPending();renderDone();fillSelects();renderHome();}
+function renderCounters(){$('cTotal').textContent=db.orders.length;$('cPending').textContent=db.orders.filter(o=>!db.dispatches.some(d=>d.orderId===o.id)).length;$('cDone').textContent=db.dispatches.length;$('cPlates').textContent=db.plates.length}
+
+function recordCard(o){
+ const d=db.dispatches.find(x=>x.orderId===o.id);
+ return `<article class="record-card"><div class="record-title"><strong>PEDIDO ${esc(o.pedido)}</strong><span class="badge ${d?'done':'pending'}">${d?'DESPACHADO':'PENDIENTE'}</span></div><div class="record-grid"><div class="record-item"><span>NÚMERO DE ORDEN</span><b>${esc(o.orden)}</b></div><div class="record-item"><span>NÚMERO DE REFERENCIA</span><b>${esc(o.referencia)}</b></div><div class="record-item"><span>CLIENTE</span><b>${esc(o.cliente)}</b></div><div class="record-item"><span>PLACA</span><b>${esc(o.placa)}</b></div><div class="record-item"><span>HORA</span><b>${esc(o.hora)}</b></div><div class="record-item"><span>CANTIDAD A CARGAR</span><b>${esc(o.cantidad)}</b></div><div class="record-item"><span>CANTIDAD MÍNIMA</span><b>${esc(o.minima)}</b></div><div class="record-item"><span>CANTIDAD MÁXIMA</span><b>${esc(o.maxima)}</b></div><div class="record-item"><span>RESPONSABLE</span><b>${esc(o.responsable)}</b></div><div class="record-item full"><span>OBSERVACIONES</span><b>${esc(o.observaciones||'SIN OBSERVACIONES')}</b></div></div></article>`;
+}
+function renderOrders(){
+ let q=($('searchOrders')?.value||'').toUpperCase();
+ let list=db.orders.filter(o=>Object.values(o).join(' ').toUpperCase().includes(q));
+ $('ordersTable').innerHTML=!list.length?'<div class="empty">NO HAY ORDENES REGISTRADAS</div>':'<div class="record-list">'+list.slice().reverse().map(recordCard).join('')+'</div>';
+}
+function renderPending(){
+ let list=db.orders.filter(o=>!db.dispatches.some(d=>d.orderId===o.id));
+ $('pendingTable').innerHTML=!list.length?'<div class="empty">NO HAY PEDIDOS PENDIENTES DE DESPACHO</div>':'<div class="record-list">'+list.slice().reverse().map(o=>`<article class="record-card"><div class="record-title"><strong>PEDIDO ${esc(o.pedido)}</strong><span class="badge pending">PENDIENTE</span></div><div class="record-grid"><div class="record-item"><span>ORDEN</span><b>${esc(o.orden)}</b></div><div class="record-item"><span>CLIENTE</span><b>${esc(o.cliente)}</b></div><div class="record-item"><span>PLACA REGISTRADA</span><b>${esc(o.placa)}</b></div><div class="record-item"><span>CANTIDAD</span><b>${esc(o.cantidad)}</b></div><div class="record-item"><span>RESPONSABLE</span><b>${esc(o.responsable)}</b></div></div></article>`).join('')+'</div>';
+}
+function renderDone(){
+ let q=($('searchDone')?.value||'').toUpperCase();
+ let list=db.dispatches.filter(d=>Object.values(d).join(' ').toUpperCase().includes(q) || (()=>{let o=db.orders.find(x=>x.id===d.orderId)||{};return Object.values(o).join(' ').toUpperCase().includes(q)})());
+ $('doneTable').innerHTML=!list.length?'<div class="empty">NO HAY PEDIDOS DESPACHADOS</div>':'<div class="record-list">'+list.slice().reverse().map(d=>{let o=db.orders.find(x=>x.id===d.orderId)||{};return `<article class="record-card"><div class="record-title"><strong>PEDIDO ${esc(o.pedido)}</strong><span class="badge done">DESPACHADO</span></div><div class="record-grid"><div class="record-item"><span>FECHA Y HORA DE DESPACHO</span><b>${esc((d.date||'').replace('T',' '))}</b></div><div class="record-item"><span>PLACA DE DESPACHO</span><b>${esc(d.plate)}</b></div><div class="record-item"><span>NÚMERO DE ORDEN</span><b>${esc(o.orden)}</b></div><div class="record-item"><span>REFERENCIA</span><b>${esc(o.referencia)}</b></div><div class="record-item"><span>CLIENTE</span><b>${esc(o.cliente)}</b></div><div class="record-item"><span>CANTIDAD</span><b>${esc(o.cantidad)}</b></div><div class="record-item"><span>RESPONSABLE</span><b>${esc(o.responsable)}</b></div><div class="record-item full"><span>OBSERVACIONES DEL DESPACHO</span><b>${esc(d.obs||'SIN OBSERVACIONES')}</b></div></div></article>`}).join('')+'</div>';
+}
+function renderHome(){
+ let pending=db.orders.filter(o=>!db.dispatches.some(d=>d.orderId===o.id)).slice(-8).reverse();
+ $('homeTable').innerHTML=!pending.length?'<div class="empty">NO HAY PEDIDOS PENDIENTES</div>':'<div class="record-list">'+pending.map(o=>`<article class="record-card"><div class="record-title"><strong>PEDIDO ${esc(o.pedido)}</strong><span class="badge pending">PENDIENTE</span></div><div class="record-grid"><div class="record-item"><span>CLIENTE</span><b>${esc(o.cliente)}</b></div><div class="record-item"><span>PLACA</span><b>${esc(o.placa)}</b></div><div class="record-item"><span>CANTIDAD</span><b>${esc(o.cantidad)}</b></div><div class="record-item"><span>ORDEN</span><b>${esc(o.orden)}</b></div></div></article>`).join('')+'</div>';
+}
+function renderPlates(){
+ if(!db.plates.length){$('platesTable').innerHTML='<div class="empty">NO HAY PLACAS REGISTRADAS</div>';return}
+ $('platesTable').innerHTML='<div class="record-list">'+db.plates.slice().reverse().map(p=>`<article class="record-card"><div class="record-title"><strong>${esc(p.plate)}</strong><span class="badge done">REGISTRADA</span></div><div class="record-grid"><div class="record-item"><span>CONDUCTOR</span><b>${esc(p.driver)}</b></div><div class="record-item"><span>TIPO DE CAMIÓN</span><b>${esc(p.truck)}</b></div><div class="record-item full"><span>NÚMERO DE REGISTRO</span><b>${esc(p.reg)}</b></div></div></article>`).join('')+'</div>';
+}
+$('orderForm').addEventListener('submit',e=>{e.preventDefault();let o={id:uid(),orden:$('orden').value,pedido:$('pedido').value,referencia:$('referencia').value,cliente:$('cliente').value,placa:$('placaOrden').value,hora:$('hora').value,cantidad:$('cantidad').value,minima:$('minima').value,maxima:$('maxima').value,responsable:$('responsable').value,observaciones:$('observaciones').value};if(Number(o.minima)>Number(o.maxima)){alert('LA CANTIDAD MÍNIMA NO PUEDE SER MAYOR QUE LA MÁXIMA.');return}if(Number(o.cantidad)<Number(o.minima)||Number(o.cantidad)>Number(o.maxima)){alert('LA CANTIDAD A CARGAR DEBE ESTAR ENTRE LA MÍNIMA Y LA MÁXIMA.');return}if(db.orders.some(x=>x.pedido===o.pedido)){alert('EL NÚMERO DE PEDIDO YA ESTÁ REGISTRADO.');return}db.orders.push(o);save();e.target.reset();alert('ORDEN GUARDADA CORRECTAMENTE.')});
+$('plateForm').addEventListener('submit',e=>{e.preventDefault();let p={id:uid(),plate:$('plate').value.trim().toUpperCase(),driver:$('driver').value.trim().toUpperCase(),truck:$('truck').value.trim().toUpperCase(),reg:$('reg').value.trim().toUpperCase()};if(db.plates.some(x=>x.plate===p.plate)){alert('LA PLACA YA ESTÁ REGISTRADA.');return}db.plates.push(p);save();e.target.reset();$('plate').focus();alert('PLACA GUARDADA CORRECTAMENTE. LOS CAMPOS QUEDARON LISTOS PARA REGISTRAR OTRA.')});
+$('dispatchForm').addEventListener('submit',e=>{e.preventDefault();let id=$('dispatchOrder').value;if(!id){alert('SELECCIONE UN PEDIDO.');return}if(db.dispatches.some(d=>d.orderId===id)){alert('ESTE PEDIDO YA FUE DESPACHADO.');return}if(!$('dispatchPlate').value){alert('SELECCIONE LA PLACA DEL DESPACHO.');return}db.dispatches.push({id:uid(),orderId:id,plate:$('dispatchPlate').value,date:$('dispatchDate').value,obs:$('dispatchObs').value});save();e.target.reset();$('dispatchDate').value=nowLocal();alert('PEDIDO DESPACHADO CORRECTAMENTE.')});
+$('clearAll').addEventListener('click',()=>{if(confirm('¿ESTÁ SEGURO DE ELIMINAR TODOS LOS PEDIDOS, PLACAS Y DESPACHOS? ESTA ACCIÓN NO SE PUEDE DESHACER.')){db={orders:[],plates:[],dispatches:[]};save();alert('TODOS LOS REGISTROS FUERON ELIMINADOS.')}});
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab,.section').forEach(x=>x.classList.remove('active'));b.classList.add('active');$(b.dataset.tab).classList.add('active');if(b.dataset.tab==='despacho')$('dispatchDate').value=nowLocal()}));
+$('searchOrders').addEventListener('input',renderOrders);$('searchDone').addEventListener('input',renderDone);upperInputs();$('dispatchDate').value=nowLocal();renderAll();
+
+
+let deferredInstallPrompt=null;
+window.addEventListener('beforeinstallprompt', e=>{
+  e.preventDefault();
+  deferredInstallPrompt=e;
+  const b=$('installApp');
+  if(b) b.style.display='inline-block';
+});
+$('installApp')?.addEventListener('click', async()=>{
+  if(!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  try{await deferredInstallPrompt.userChoice;}finally{deferredInstallPrompt=null; if($('installApp')) $('installApp').style.display='none';}
+});
+window.addEventListener('appinstalled',()=>{if($('installApp'))$('installApp').style.display='none'});
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
+</script>
+</body>
+</html>
