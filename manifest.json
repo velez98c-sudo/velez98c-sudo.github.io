@@ -1,0 +1,18 @@
+{
+  "name": "CONTROL DE MERCANCÍA",
+  "short_name": "MERCANCÍA",
+  "description": "GESTIÓN DE ENTRADAS, SALIDAS Y DESPACHOS",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f5f5f5",
+  "theme_color": "#d9b94c",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='38' fill='%23252525'/%3E%3Crect x='28' y='28' width='136' height='136' rx='30' fill='%23d9b94c'/%3E%3Ctext x='96' y='112' text-anchor='middle' font-family='Arial' font-size='55' font-weight='900' fill='%23111'%3ECM%3C/text%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
